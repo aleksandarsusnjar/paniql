@@ -1,0 +1,123 @@
+fragment fileFields on Folder {
+  files {
+    id
+    name
+    fromREST
+  }
+}
+
+query ShallowYetScary {            # Does not count towards depth
+  top {                            # Namespace, should not count towards depth
+    sub {                          # Namespace, should not count towards depth
+      r00: root { ... fileFields } # Depths 1 & 2
+      r01: root { ... fileFields } # Depths 1 & 2
+      r02: root { ... fileFields } # Depths 1 & 2
+      r03: root { ... fileFields } # Depths 1 & 2
+      r04: root { ... fileFields } # Depths 1 & 2
+      r05: root { ... fileFields } # Depths 1 & 2
+      r06: root { ... fileFields } # Depths 1 & 2
+      r07: root { ... fileFields } # Depths 1 & 2
+      r08: root { ... fileFields } # Depths 1 & 2
+      r09: root { ... fileFields } # Depths 1 & 2
+
+      r10: root { ... fileFields } # Depths 1 & 2
+      r11: root { ... fileFields } # Depths 1 & 2
+      r12: root { ... fileFields } # Depths 1 & 2
+      r13: root { ... fileFields } # Depths 1 & 2
+      r14: root { ... fileFields } # Depths 1 & 2
+      r15: root { ... fileFields } # Depths 1 & 2
+      r16: root { ... fileFields } # Depths 1 & 2
+      r17: root { ... fileFields } # Depths 1 & 2
+      r18: root { ... fileFields } # Depths 1 & 2
+      r19: root { ... fileFields } # Depths 1 & 2
+
+      r20: root { ... fileFields } # Depths 1 & 2
+      r21: root { ... fileFields } # Depths 1 & 2
+      r22: root { ... fileFields } # Depths 1 & 2
+      r23: root { ... fileFields } # Depths 1 & 2
+      r24: root { ... fileFields } # Depths 1 & 2
+      r25: root { ... fileFields } # Depths 1 & 2
+      r26: root { ... fileFields } # Depths 1 & 2
+      r27: root { ... fileFields } # Depths 1 & 2
+      r28: root { ... fileFields } # Depths 1 & 2
+      r29: root { ... fileFields } # Depths 1 & 2
+
+      r30: root { ... fileFields } # Depths 1 & 2
+      r31: root { ... fileFields } # Depths 1 & 2
+      r32: root { ... fileFields } # Depths 1 & 2
+      r33: root { ... fileFields } # Depths 1 & 2
+      r34: root { ... fileFields } # Depths 1 & 2
+      r35: root { ... fileFields } # Depths 1 & 2
+      r36: root { ... fileFields } # Depths 1 & 2
+      r37: root { ... fileFields } # Depths 1 & 2
+      r38: root { ... fileFields } # Depths 1 & 2
+      r39: root { ... fileFields } # Depths 1 & 2
+
+      r40: root { ... fileFields } # Depths 1 & 2
+      r41: root { ... fileFields } # Depths 1 & 2
+      r42: root { ... fileFields } # Depths 1 & 2
+      r43: root { ... fileFields } # Depths 1 & 2
+      r44: root { ... fileFields } # Depths 1 & 2
+      r45: root { ... fileFields } # Depths 1 & 2
+      r46: root { ... fileFields } # Depths 1 & 2
+      r47: root { ... fileFields } # Depths 1 & 2
+      r48: root { ... fileFields } # Depths 1 & 2
+      r49: root { ... fileFields } # Depths 1 & 2
+
+      r50: root { ... fileFields } # Depths 1 & 2
+      r51: root { ... fileFields } # Depths 1 & 2
+      r52: root { ... fileFields } # Depths 1 & 2
+      r53: root { ... fileFields } # Depths 1 & 2
+      r54: root { ... fileFields } # Depths 1 & 2
+      r55: root { ... fileFields } # Depths 1 & 2
+      r56: root { ... fileFields } # Depths 1 & 2
+      r57: root { ... fileFields } # Depths 1 & 2
+      r58: root { ... fileFields } # Depths 1 & 2
+      r59: root { ... fileFields } # Depths 1 & 2
+
+      r60: root { ... fileFields } # Depths 1 & 2
+      r61: root { ... fileFields } # Depths 1 & 2
+      r62: root { ... fileFields } # Depths 1 & 2
+      r63: root { ... fileFields } # Depths 1 & 2
+      r64: root { ... fileFields } # Depths 1 & 2
+      r65: root { ... fileFields } # Depths 1 & 2
+      r66: root { ... fileFields } # Depths 1 & 2
+      r67: root { ... fileFields } # Depths 1 & 2
+      r68: root { ... fileFields } # Depths 1 & 2
+      r69: root { ... fileFields } # Depths 1 & 2
+
+      r70: root { ... fileFields } # Depths 1 & 2
+      r71: root { ... fileFields } # Depths 1 & 2
+      r72: root { ... fileFields } # Depths 1 & 2
+      r73: root { ... fileFields } # Depths 1 & 2
+      r74: root { ... fileFields } # Depths 1 & 2
+      r75: root { ... fileFields } # Depths 1 & 2
+      r76: root { ... fileFields } # Depths 1 & 2
+      r77: root { ... fileFields } # Depths 1 & 2
+      r78: root { ... fileFields } # Depths 1 & 2
+      r79: root { ... fileFields } # Depths 1 & 2
+
+      r80: root { ... fileFields } # Depths 1 & 2
+      r81: root { ... fileFields } # Depths 1 & 2
+      r82: root { ... fileFields } # Depths 1 & 2
+      r83: root { ... fileFields } # Depths 1 & 2
+      r84: root { ... fileFields } # Depths 1 & 2
+      r85: root { ... fileFields } # Depths 1 & 2
+      r86: root { ... fileFields } # Depths 1 & 2
+      r87: root { ... fileFields } # Depths 1 & 2
+      r88: root { ... fileFields } # Depths 1 & 2
+      r89: root { ... fileFields } # Depths 1 & 2
+
+      r90: root { ... fileFields } # Depths 1 & 2
+      r91: root { ... fileFields } # Depths 1 & 2
+      r92: root { ... fileFields } # Depths 1 & 2
+      r93: root { ... fileFields } # Depths 1 & 2
+      r94: root { ... fileFields } # Depths 1 & 2
+      r95: root { ... fileFields } # Depths 1 & 2
+      r96: root { ... fileFields } # Depths 1 & 2
+      r97: root { ... fileFields } # Depths 1 & 2
+      r98: root { ... fileFields } # Depths 1 & 2
+      r99: root { ... fileFields } # Depths 1 & 2
+    }
+  }
+}

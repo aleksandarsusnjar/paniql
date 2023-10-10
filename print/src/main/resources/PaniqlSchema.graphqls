@@ -1,0 +1,161 @@
+"""
+A convenience shorthand indicating that the annotated element is "free" in terms of access cost
+as it is merely a parsing exercise - e.g. a namespace.
+"""
+directive @paniqlFree on OBJECT | FIELD_DEFINITION
+
+"""
+Categorizes the type as a resource - a top level entity whose access needs to be emphasised.
+"""
+directive @paniqlResource on OBJECT | INTERFACE | UNION
+
+
+"""
+Paniql directive to annotate GraphQL schema elements with detailed complexity/cost data.
+"""
+directive @paniql(
+  """
+  Specifies the statistical bounds of the cardinality of the annotated element (type, field).
+  """
+  q: PaniqlBounds
+
+  """
+
+  """
+  resource: Boolean
+
+  """
+  Specifies if the values/instances are shared and potentially referenced by many objects
+  (or are assumed to have distinct relations).
+
+  Defaults to not shared for types. If omitted for fields, the effective value is taken from
+  the field type.
+  """
+  shared: Boolean
+
+  """
+  Base, unavoidable, cost.
+
+  One base cost is applied for each "package" of `maxUnitsPerBase` quantity.
+  """
+  base: PaniqlPrice
+
+  """
+  Quantity supported by the `base` cost before another base cost must be applied.
+  """
+  maxUnitsPerBase: Float
+
+  """
+  Additional cost to base that is multiplied by the unit quantity.
+  """
+  unit: PaniqlPrice
+
+  """
+  Specifies the abilities of the framework to optimise performance by leveraging database-like joins.
+  """
+  joins: [PaniqlJoin!]
+
+  """
+  Indicates whether every access incurs a separate cost even if it is invoked on the same object or
+  container that has been accessed already.
+  """
+  always: Boolean! = false
+) on OBJECT | FIELD_DEFINITION
+
+"""
+Represents a of statistical bounds.
+
+Either `const` or at least one of the specific bounds must be specified
+(it is invalid to specify both `const` and any other bounds).
+
+If `min` is omitted, it is assumed to be 0.0. If two among the other bounds are specified
+the remaining one is calculated to fit the following gamma interpolation:
+
+```
+bound = x^gamma * (max - min) + min
+```
+
+Where `x` is chosen to be:
+
+- `0.5` for `avg`
+- `0.95` for  `p95`
+- `1.0` for `max`
+"""
+input PaniqlBounds {
+  """
+  Convenience field to set `min`, `avg`, `p95` and `max` to the same, constant, bound value.
+  This cannot be specified together with any other bound.
+  """
+  const: Float
+
+  """
+  Minimum bound. Defaults to `0.0` if omitted while any other bound is specified.
+  Do not specify just the `min`.
+  """
+  min: Float
+
+  """
+  Average (mean) bound. Ideally also 50% percentile (half of the values are expected to be
+  equal to or less than this bound), but this is not specified. Defaulting logic may perform
+  curve fitting that equates the average and 50% percentile in some cases.
+  """
+  avg: Float
+
+  """
+  95% percentile value, where 95% values are expected to be less than or equal to this bound.
+  """
+  p95: Float
+
+  """
+  Maximum possible value, no value can be greater than this one.
+
+  This value must be finite to reflect the reality that even runtime cases that could have infinite bounds
+  would fail after processing a finite value.
+  """
+  max: Float
+}
+
+"""
+Represents the "price" in statistically bounded quantities of various kinds of standard types of work.
+"""
+input PaniqlPrice {
+  """
+  Count of accesses. Defaults to `{ const: 1.0 }`
+  """
+  access: PaniqlBounds
+
+  """
+  Quantity of trivial returns. Defaulted based on contextual details if omitted.
+  """
+  trivial: PaniqlBounds
+
+  """
+  Quantity of local in-machine (in or out of process) calls. Defaulted based on contextual details if omitted.
+  """
+  local: PaniqlBounds
+
+  """
+  Quantity of database-like "joins", bulk aggregations of data. Defaulted based on contextual details if omitted.
+  """
+  join: PaniqlBounds
+
+  """
+  Quantity of remote (network) API calls to an efficient API (e.g. SQL, GraphQL). Defaulted based on contextual details if omitted.
+  """
+  fast: PaniqlBounds
+
+  """
+  Quantity of remote (network) API calls to an inefficient API (e.g. REST). Defaulted based on contextual details if omitted.
+  """
+  slow: PaniqlBounds
+}
+
+"""
+Specifies the join details.
+"""
+input PaniqlJoin {
+  types: [String!]
+  autoDepth: Int
+  fields: [String!]
+  sub: [PaniqlJoin!]
+}

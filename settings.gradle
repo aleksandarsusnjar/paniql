@@ -1,0 +1,6 @@
+rootProject.name = 'paniql'
+
+include 'core'
+include 'print'
+include 'commandline'
+

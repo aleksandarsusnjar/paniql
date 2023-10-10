@@ -1,0 +1,35 @@
+type Query                   @paniqlFree {
+  top: TopNamespace!         @paniqlFree
+}
+
+type TopNamespace            @paniqlFree { # A namespace example.
+  sub: SubNamespace!         @paniqlFree
+}
+
+type SubNamespace            @paniqlFree { # Another example namespace.
+  file(id: ID!): File        @paniql(unit: { local: { const: 1.0} } joins: [ { autoDepth: 2 }])
+  folder(id: ID!): Folder    @paniql(unit: { local: { const: 1.0} } joins: [ { autoDepth: 2 }])
+  root: Folder!              @paniql(unit: { local: { const: 1.0} } joins: [ { autoDepth: 2 }])
+  dumb: Folder!              @paniql(always: true, unit: { slow: { const: 1.0 }}, joins: [ { autoDepth: 2 }])
+}
+
+interface Entry {
+  id: ID!                    @paniql(unit: { trivial: { const: 1.0 }})
+  name: String!              @paniql(unit: { trivial: { const: 1.0 }})
+  container: Folder
+}
+
+type File implements Entry   @paniqlResource @paniql(unit: { local: { const: 1} } joins: [ { autoDepth: 2 }]) {
+  id: ID!                    @paniql(unit: { trivial: { const: 1.0 }})
+  name: String!              @paniql(unit: { trivial: { const: 1.0 }})
+  container: Folder!
+  fromREST: String!          @paniql(unit: { slow: { const: 1.0 }})
+}
+
+type Folder implements Entry @paniqlResource @paniql(unit: { local: { const: 1 } } joins: [ { autoDepth: 2 }]) {
+  id: ID!                    @paniql(unit: { trivial: { const: 1.0 }})
+  name: String!              @paniql(unit: { trivial: { const: 1.0 }})
+  container: Folder          @paniql(joins: [ { autoDepth: 2 }])
+  files: [File!]!            @paniql(unit: { local: { const: 1.0 }} q: { min: 0 avg: 50 p95: 500 max: 1000 })
+  subfolders: [Folder!]!     @paniql(unit: { local: { const: 1.0 }} q: { min: 0 avg:  3 p95: 200 max: 1000 })
+}

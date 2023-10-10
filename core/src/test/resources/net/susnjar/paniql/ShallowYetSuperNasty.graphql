@@ -1,0 +1,123 @@
+fragment fileFields on Folder {
+  files {
+    id
+    name
+    fromREST
+  }
+}
+
+query ShallowYetSuperScary {       # Does not count towards depth
+  top {                            # Namespace, should not count towards depth
+    sub {                          # Namespace, should not count towards depth
+      r00: dumb { ... fileFields } # Depths 1 & 2
+      r01: dumb { ... fileFields } # Depths 1 & 2
+      r02: dumb { ... fileFields } # Depths 1 & 2
+      r03: dumb { ... fileFields } # Depths 1 & 2
+      r04: dumb { ... fileFields } # Depths 1 & 2
+      r05: dumb { ... fileFields } # Depths 1 & 2
+      r06: dumb { ... fileFields } # Depths 1 & 2
+      r07: dumb { ... fileFields } # Depths 1 & 2
+      r08: dumb { ... fileFields } # Depths 1 & 2
+      r09: dumb { ... fileFields } # Depths 1 & 2
+
+      r10: dumb { ... fileFields } # Depths 1 & 2
+      r11: dumb { ... fileFields } # Depths 1 & 2
+      r12: dumb { ... fileFields } # Depths 1 & 2
+      r13: dumb { ... fileFields } # Depths 1 & 2
+      r14: dumb { ... fileFields } # Depths 1 & 2
+      r15: dumb { ... fileFields } # Depths 1 & 2
+      r16: dumb { ... fileFields } # Depths 1 & 2
+      r17: dumb { ... fileFields } # Depths 1 & 2
+      r18: dumb { ... fileFields } # Depths 1 & 2
+      r19: dumb { ... fileFields } # Depths 1 & 2
+
+      r20: dumb { ... fileFields } # Depths 1 & 2
+      r21: dumb { ... fileFields } # Depths 1 & 2
+      r22: dumb { ... fileFields } # Depths 1 & 2
+      r23: dumb { ... fileFields } # Depths 1 & 2
+      r24: dumb { ... fileFields } # Depths 1 & 2
+      r25: dumb { ... fileFields } # Depths 1 & 2
+      r26: dumb { ... fileFields } # Depths 1 & 2
+      r27: dumb { ... fileFields } # Depths 1 & 2
+      r28: dumb { ... fileFields } # Depths 1 & 2
+      r29: dumb { ... fileFields } # Depths 1 & 2
+
+      r30: dumb { ... fileFields } # Depths 1 & 2
+      r31: dumb { ... fileFields } # Depths 1 & 2
+      r32: dumb { ... fileFields } # Depths 1 & 2
+      r33: dumb { ... fileFields } # Depths 1 & 2
+      r34: dumb { ... fileFields } # Depths 1 & 2
+      r35: dumb { ... fileFields } # Depths 1 & 2
+      r36: dumb { ... fileFields } # Depths 1 & 2
+      r37: dumb { ... fileFields } # Depths 1 & 2
+      r38: dumb { ... fileFields } # Depths 1 & 2
+      r39: dumb { ... fileFields } # Depths 1 & 2
+
+      r40: dumb { ... fileFields } # Depths 1 & 2
+      r41: dumb { ... fileFields } # Depths 1 & 2
+      r42: dumb { ... fileFields } # Depths 1 & 2
+      r43: dumb { ... fileFields } # Depths 1 & 2
+      r44: dumb { ... fileFields } # Depths 1 & 2
+      r45: dumb { ... fileFields } # Depths 1 & 2
+      r46: dumb { ... fileFields } # Depths 1 & 2
+      r47: dumb { ... fileFields } # Depths 1 & 2
+      r48: dumb { ... fileFields } # Depths 1 & 2
+      r49: dumb { ... fileFields } # Depths 1 & 2
+
+      r50: dumb { ... fileFields } # Depths 1 & 2
+      r51: dumb { ... fileFields } # Depths 1 & 2
+      r52: dumb { ... fileFields } # Depths 1 & 2
+      r53: dumb { ... fileFields } # Depths 1 & 2
+      r54: dumb { ... fileFields } # Depths 1 & 2
+      r55: dumb { ... fileFields } # Depths 1 & 2
+      r56: dumb { ... fileFields } # Depths 1 & 2
+      r57: dumb { ... fileFields } # Depths 1 & 2
+      r58: dumb { ... fileFields } # Depths 1 & 2
+      r59: dumb { ... fileFields } # Depths 1 & 2
+
+      r60: dumb { ... fileFields } # Depths 1 & 2
+      r61: dumb { ... fileFields } # Depths 1 & 2
+      r62: dumb { ... fileFields } # Depths 1 & 2
+      r63: dumb { ... fileFields } # Depths 1 & 2
+      r64: dumb { ... fileFields } # Depths 1 & 2
+      r65: dumb { ... fileFields } # Depths 1 & 2
+      r66: dumb { ... fileFields } # Depths 1 & 2
+      r67: dumb { ... fileFields } # Depths 1 & 2
+      r68: dumb { ... fileFields } # Depths 1 & 2
+      r69: dumb { ... fileFields } # Depths 1 & 2
+
+      r70: dumb { ... fileFields } # Depths 1 & 2
+      r71: dumb { ... fileFields } # Depths 1 & 2
+      r72: dumb { ... fileFields } # Depths 1 & 2
+      r73: dumb { ... fileFields } # Depths 1 & 2
+      r74: dumb { ... fileFields } # Depths 1 & 2
+      r75: dumb { ... fileFields } # Depths 1 & 2
+      r76: dumb { ... fileFields } # Depths 1 & 2
+      r77: dumb { ... fileFields } # Depths 1 & 2
+      r78: dumb { ... fileFields } # Depths 1 & 2
+      r79: dumb { ... fileFields } # Depths 1 & 2
+
+      r80: dumb { ... fileFields } # Depths 1 & 2
+      r81: dumb { ... fileFields } # Depths 1 & 2
+      r82: dumb { ... fileFields } # Depths 1 & 2
+      r83: dumb { ... fileFields } # Depths 1 & 2
+      r84: dumb { ... fileFields } # Depths 1 & 2
+      r85: dumb { ... fileFields } # Depths 1 & 2
+      r86: dumb { ... fileFields } # Depths 1 & 2
+      r87: dumb { ... fileFields } # Depths 1 & 2
+      r88: dumb { ... fileFields } # Depths 1 & 2
+      r89: dumb { ... fileFields } # Depths 1 & 2
+
+      r90: dumb { ... fileFields } # Depths 1 & 2
+      r91: dumb { ... fileFields } # Depths 1 & 2
+      r92: dumb { ... fileFields } # Depths 1 & 2
+      r93: dumb { ... fileFields } # Depths 1 & 2
+      r94: dumb { ... fileFields } # Depths 1 & 2
+      r95: dumb { ... fileFields } # Depths 1 & 2
+      r96: dumb { ... fileFields } # Depths 1 & 2
+      r97: dumb { ... fileFields } # Depths 1 & 2
+      r98: dumb { ... fileFields } # Depths 1 & 2
+      r99: dumb { ... fileFields } # Depths 1 & 2
+    }
+  }
+}

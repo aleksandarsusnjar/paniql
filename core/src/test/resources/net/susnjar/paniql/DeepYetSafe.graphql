@@ -1,0 +1,95 @@
+fragment basics on Entry {
+  id
+  name
+  ... on Folder {
+    files {
+      id
+      name
+    }
+  }
+}
+
+query DeepYetSafe {       # Does not count towards depth
+  top {                   # Namespace, should not count towards depth
+    sub {                 # Namespace, should not count towards depth
+      folder(id: 12345) { # Depth 1
+        ...basics
+        container {  # Depth 2
+          ...basics
+          container {  # Depth 3
+            ...basics
+            container {  # Depth 4
+              ...basics
+              container {  # Depth 5
+                ...basics
+                container {  # Depth 6
+                  ...basics
+                  container { # Depth 7
+                    ...basics
+                    container { # Depth 8
+                      ...basics
+                      container { # Depth 9
+                        ...basics
+                        container { # Depth 10
+                          ...basics
+                          container { # Depth 11
+                            ...basics
+                            container { # Depth 12
+                              ...basics
+                              container { # Depth 13
+                                ...basics
+                                container { # Depth 14
+                                  ...basics
+                                  container { # Depth 15
+                                    ...basics
+                                    container { # Depth 15
+                                      ...basics
+                                      container { # Depth 15
+                                        ...basics
+                                        container { # Depth 16
+                                          ...basics
+                                          container { # Depth 17
+                                            ...basics
+                                            container { # Depth 18
+                                              ...basics
+                                              container { # Depth 19
+                                                ...basics
+                                                container { # Depth 20
+                                                  ...basics
+                                                  container { # Depth 21
+                                                    ...basics
+                                                    container { # Depth 22
+                                                      ...basics
+                                                      container { # Depth 23
+                                                        ...basics
+                                                        container { # Depth 24
+                                                          ...basics
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

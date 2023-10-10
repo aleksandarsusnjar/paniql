@@ -1,0 +1,30 @@
+fragment allContent on Entry {
+  id
+  name
+  ... on File {
+    fromREST
+  }
+  ... on Folder {
+    files {
+      id
+      name
+      fromREST
+    }
+  }
+}
+
+query Alarming {            # Does not count towards depth
+  top {                     # Namespace, should not count towards depth
+    sub {                   # Namespace, should not count towards depth
+      folder(id: 12345) {   # Depth 1: Looks up a single folder, not scary
+        ...allContent       # Depth 2: All files with content
+        subfolders {        # Depth 2: For each subfolder...
+          ...allContent     # Depth 3: All files with content
+          subfolders {      # Depth 4: For each subfolder...
+            ...allContent   # Depth 4: All files with content
+          }
+        }
+      }
+    }
+  }
+}
