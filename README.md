@@ -47,11 +47,12 @@ accounting for resource type access constraints.
 ## Approach
 
 Paniql analyses a given GraphQL request and, given the GraphQL schema annotated with
-[Paniql directives](core/src/main/resources/PaniqlSchema.graphqls), estimates the
-access and a number of different standard work type quantities for each type and field,
-while supporting servers able to optimize queries using deep look-aheads (e.g. using 
-database joins). These quantities are standardized and not rolled-up. Instead they are
-all independently available.
+[Paniql directives](core/src/main/resources/net/susnjar/paniql/PaniqlSchema.graphqls),
+estimates the access and a number of different standard work type quantities for each
+type and field, while supporting servers able to optimize queries
+[using deep look-ahead](https://www.graphql-java.com/blog/deep-dive-data-fetcher-results/)
+(e.g. using database joins). These quantities are standardized and not rolled-up. 
+Instead, they are all independently available.
 
 Have a look at [some report examples](print/doc/samples) and 
 [corresponding sample schema and requests](core/src/test/resources/net/susnjar/paniql/) for illustration.
@@ -90,7 +91,7 @@ resource utilization but the validity of the usage.
 ## Implied but left out
 
 Paniql is not a complete solution, only a part of it. It only analyses the requests
-and does not make any decisions. Actual decision making and related constraints are
+and does not make any decisions. Actual decision-making and related constraints are
 (presently) not handled by Paniql. 
 
 Recommended approach is to use Paniql together with a sliding time window quota
@@ -117,4 +118,6 @@ For example, any combination of the following could be envisioned as quotas:
 Such quota/user tracking logic could also be present in or added to a variety of
 existing API gateways. Additionally, as a Java project, Paniql could be used within
 Java GraphQL projects as an embedded first level of defence against malicious
-requests.
+requests. Note that, while current implementation is in Java, this is not meant to be
+tied to Java at all.
+
