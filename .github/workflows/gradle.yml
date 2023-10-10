@@ -11,9 +11,10 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: write
     steps:
     - uses: actions/checkout@v4
       with:
@@ -34,6 +35,6 @@ jobs:
     - name: Build and publish with Gradle
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
-        arguments: versionInfo build publish
+        arguments: buildInfo build publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
