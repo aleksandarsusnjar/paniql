@@ -25,9 +25,7 @@ public class InvoiceTest extends ResourceDrivenTest {
         typeReg = loadSchema();
         environment = new Environment(typeReg);
 
-        final Document document = parseRequest(resource);
-        final Request request = new Request(document, environment);
-
+        final Request request = environment.request(getResourceAsString(resource));
         final Invoice invoice = request.invoice();
 
         Assertions.assertNotNull(invoice);

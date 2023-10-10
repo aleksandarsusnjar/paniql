@@ -1,15 +1,57 @@
 package net.susnjar.paniql;
 
 import graphql.language.*;
+import graphql.parser.Parser;
+import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import net.susnjar.paniql.models.*;
+import net.susnjar.paniql.pricing.Invoice;
 
+import javax.print.Doc;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+/**
+ * Representation of the API schema and environment, main entry point.
+ *
+ * Use:
+ *
+ * <ol>
+ *     <li>Use one of the constructors to instantiate the environment,
+ *         passing the GraphQL schema in any of the supported ways, i.e.:<ul>
+ *        <li>{@link #Environment(String...)}  }</li>
+ *        <li>{@link #Environment(File...)}  }</li>
+ *        <li>{@link #Environment(Path...)}  }</li>
+ *        <li>{@link #Environment(Collection)}  }</li>
+ *        <li>{@link #Environment(TypeDefinitionRegistry)}  }</li>
+ *     </ul></li>
+ *
+ *     <li>Reuse that environment to get {@linkplain Invoice invoices} for each
+ *         {@linkplain #request(String) request} by invoking either the
+ *         {@link #invoice(String)} or {@link #invoice(Document)} method.
+ *     </li>
+ *
+ *     <li>Inspect and react to the data reported in the resulting {@linkplain Invoice invoice}.</li>
+ * </ol>
+ *
+ * Example:
+ *
+ * <code>
+ *     final Environment environment = new Environment(Path.of("/some/dir/api-schema.graphqls"));
+ *     final Invoice invoice1 = environment.invoice("{ folder(id: 123) { id } }");
+ *     final Invoice invoice2 = environment.invoice(someRequestString);
+ *     final Invoice invoice3 = environment.invoice(parsedRequestDocument);
+ * </code>
+ */
 public class Environment {
+    private static final String SCHEMA_SEPARATOR = System.lineSeparator() + System.lineSeparator();
+
     private final TypeDefinitionRegistry typeRegistry;
 
     private final HashMap<String, OutputTypeModel> outputTypes = new HashMap<>();
@@ -17,6 +59,22 @@ public class Environment {
     private final ObjectTypeModel queryType;
     private final ObjectTypeModel mutationType;
     private final ObjectTypeModel subscriptionType;
+
+    public Environment(final File... schemaFiles) throws IOException {
+        this(Arrays.asList(schemaFiles).stream().map(File::toPath).collect(Collectors.toList()));
+    }
+
+    public Environment(final Path... schemaPaths) throws IOException {
+        this(Arrays.asList(schemaPaths));
+    }
+
+    public Environment(final Collection<Path> schemaPaths) throws IOException {
+        this(parsePathSchemas(schemaPaths));
+    }
+
+    public Environment(final String... schemas) {
+        this(parseTextSchemas(Arrays.asList(schemas)));
+    }
 
     public Environment(final TypeDefinitionRegistry typeRegistry) {
         this.typeRegistry = typeRegistry;
@@ -39,6 +97,24 @@ public class Environment {
         this.queryType = getOutputType("Query");
         this.mutationType = getOutputType("Mutation");
         this.subscriptionType = getOutputType("Subscription");
+    }
+
+    public Request request(final String graphQLRequest) {
+        Parser parser = new Parser();
+        final Document document = parser.parseDocument(graphQLRequest);
+        return request(document);
+    }
+
+    public Request request(final Document document) {
+        return new Request(document, this);
+    }
+
+    public Invoice invoice(final String document) {
+        return request(document).invoice();
+    }
+
+    public Invoice invoice(final Document document) {
+        return request(document).invoice();
     }
 
     private void registerCustomTypes() {
@@ -152,15 +228,48 @@ public class Environment {
         return (T)this.outputTypes.get(name);
     }
 
-    public static String getPaniqlSchema() throws IOException {
-        final String packagePath = Environment.class.getPackageName().replaceAll("\\.", "/");
-        final String resourcePath = packagePath + "/PaniqlSchema.graphqls";
-        try (
-            final InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-            final Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
-            final BufferedReader bufferedReader = new BufferedReader(reader);
-        ) {
-            return bufferedReader.lines().collect(Collectors.joining(System.lineSeparator()));
+    public static String getPaniqlSchema() {
+        try {
+            final String packagePath = Environment.class.getPackageName().replaceAll("\\.", "/");
+            final String resourcePath = packagePath + "/PaniqlSchema.graphqls";
+            try (
+                    final InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+                    final Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
+                    final BufferedReader bufferedReader = new BufferedReader(reader);
+            ) {
+                return bufferedReader.lines().collect(Collectors.joining(System.lineSeparator()));
+            }
+        } catch (IOException x) {
+            throw new RuntimeException("Unexpected I/O error while reading Paniql schema.");
         }
     }
+
+    private static TypeDefinitionRegistry parseTextSchemas(final Collection<String> schemas) {
+        final String paniqlSchema = getPaniqlSchema();
+        int schemaSize = paniqlSchema.length();
+        for (final String schema: schemas) {
+            schemaSize += SCHEMA_SEPARATOR.length() + schema.length();
+        }
+        final StringBuilder schemaBuilder = new StringBuilder(schemaSize);
+        schemaBuilder.append(paniqlSchema);
+        for (final String schema: schemas) {
+            schemaBuilder.append(SCHEMA_SEPARATOR);
+            schemaBuilder.append(schema);
+        }
+        SchemaParser parser = new SchemaParser();
+        return parser.parse(schemaBuilder.toString());
+    }
+
+    private static TypeDefinitionRegistry parsePathSchemas(Collection<Path> schemaPaths) throws IOException {
+        final String paniqlSchema = getPaniqlSchema();
+        final StringBuilder schemaBuilder = new StringBuilder(65536);
+        schemaBuilder.append(paniqlSchema);
+        for (final Path path: schemaPaths) {
+            schemaBuilder.append(SCHEMA_SEPARATOR);
+            schemaBuilder.append(Files.readString(path));
+        }
+        SchemaParser parser = new SchemaParser();
+        return parser.parse(schemaBuilder.toString());
+    }
+
 }

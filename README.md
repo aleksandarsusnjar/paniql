@@ -133,7 +133,6 @@ Though small, the project is divided into three modules:
 - [core](core/) - the code expected to be needed in production.
   Main classes of interest to start with are:
     - [Environment](core/src/main/java/net/susnjar/paniql/Environment.java) - reusable representation the annotated GraphQL API schema model.
-    - [Request](core/src/main/java/net/susnjar/paniql/Request.java) - representation of the GraphQL request to analyse.
     - [Invoice](core/src/main/java/net/susnjar/paniql/pricing/Invoice.java) - the result of the analysis.
 - [print](print/) - the [code](print/src/main/java/net/susnjar/paniql/print/InvoicePrinter.java) that produces formatted ASCII text reports of [Invoice(s)](core/src/main/java/net/susnjar/paniql/pricing/Invoice.java).
 - [commandline](commandline) - a command-line utility that utilizes the other two projects to allow "playing" with Paniql from command line.

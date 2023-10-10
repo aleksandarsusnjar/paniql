@@ -34,10 +34,7 @@ public class InvoicePrinterTest extends CoreResourceDrivenTest {
         typeReg = loadSchema();
         environment = new Environment(typeReg);
 
-        final Document document = parseRequest(resource);
-        final Request request = new Request(document, environment);
-
-        final Invoice invoice = request.invoice();
+        final Invoice invoice = environment.request(getResourceAsString(resource)).invoice();
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(buffer);
