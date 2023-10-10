@@ -77,12 +77,17 @@ public class InvoicePrinter {
         printTableHeader(out, "Grand Total".toUpperCase(Locale.ROOT));
         printRow(out, "", total, true);
         out.println();
-        out.println("LEGEND:");
 
+        out.println("LEGEND:");
         final int headingWidth = WorkType.getMaxHeadingLength() + 2;
+
         for (final WorkType workType: WorkType.values()) {
             out.println(" - " + pad(workType.getHeading() + ":", headingWidth) + workType.getDescription());
         }
+        out.println(" - " + pad("Min:", headingWidth) + "Minimum quantity in normal conditions.");
+        out.println(" - " + pad("Avg:", headingWidth) + "Average quantity in normal conditions.");
+        out.println(" - " + pad("95%:", headingWidth) + "95% percentile, >= 95% of expected values.");
+        out.println(" - " + pad("Max:", headingWidth) + "Maximum, accounting for built-in constraints.");
     }
 
     private <T extends ElementModel> Price println(final PrintStream out, final String title, final Map<T, Price> items) {

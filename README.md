@@ -49,9 +49,14 @@ accounting for resource type access constraints.
 Paniql analyses a given GraphQL request and, given the GraphQL schema annotated with
 [Paniql directives](core/src/main/resources/net/susnjar/paniql/PaniqlSchema.graphqls),
 estimates the access and a number of different standard work type quantities for each
-type and field, while supporting servers able to optimize queries
-[using deep look-ahead](https://www.graphql-java.com/blog/deep-dive-data-fetcher-results/)
-(e.g. using database joins). These quantities are standardized and not rolled-up. 
+type and field, while supporting servers able to optimize queries by "looking ahead"
+(see [1](https://www.graphql-java.com/blog/deep-dive-data-fetcher-results/),
+[2](https://www.apollographql.com/blog/backend/performance/optimizing-your-graphql-request-waterfalls/),
+[3](https://engineering.zalando.com/posts/2021/03/optimize-graphql-server-with-lookaheads.html),
+[4](https://www.graphile.org/graphile-build/look-ahead/),
+[5](https://boopathi.blog/graphql-optimization-lookaheads), 
+... for commentaries, variety of programming languages),
+These quantities are standardized and not rolled-up. 
 Instead, they are all independently available.
 
 Have a look at [some report examples](print/doc/samples) and 

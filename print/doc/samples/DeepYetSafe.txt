@@ -1,6 +1,5 @@
-RESOURCES
 ============================================================================================================
-Item                              Raw#         Basic         Local         Joins          Fast          Slow
+RESOURCE                          Raw#         Basic         Local         Joins          Fast          Slow
 ------------------------------------------------------------------------------------------------------------
 File                 Min             0                           0                                          
                      Avg           421                         421                                          
@@ -18,13 +17,13 @@ TOTAL                Min             0                           0             0
                      Max        26,026                      26,000            26                            
 ============================================================================================================
 
-PARTS
 ============================================================================================================
+PART                              Raw#         Basic         Local         Joins          Fast          Slow
+------------------------------------------------------------------------------------------------------------
 (none)
 
-FIELDS
 ============================================================================================================
-Item                              Raw#         Basic         Local         Joins          Fast          Slow
+FIELD                             Raw#         Basic         Local         Joins          Fast          Slow
 ------------------------------------------------------------------------------------------------------------
 File.id              Min             0             0                                                        
                      Avg           421           421                                                        
@@ -62,9 +61,8 @@ TOTAL                Min             1             0             1
                      Max        52,079        52,052            27                                          
 ============================================================================================================
 
-GRAND TOTAL
 ============================================================================================================
-                                  Raw#         Basic         Local         Joins          Fast          Slow
+GRAND TOTAL                       Raw#         Basic         Local         Joins          Fast          Slow
 ------------------------------------------------------------------------------------------------------------
                      Min             1             0             1             0                            
                      Avg         1,297           859           430             8                            
@@ -79,3 +77,7 @@ LEGEND:
  - Joins: Bulk data gathers such as DB joins.
  - Fast:  Efficient remote API calls, eg. DB, GraphQL.
  - Slow:  Inefficient remote API calls, e.g. REST.
+ - Min:   Minimum quantity in normal conditions.
+ - Avg:   Average quantity in normal conditions.
+ - 95%:   95% percentile, >= 95% of expected values.
+ - Max:   Maximum, accounting for built-in constraints.
