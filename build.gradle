@@ -49,12 +49,12 @@ subprojects {
 def gitBranch = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
 //def branchCommitCount = 'git rev-list --count HEAD'.execute().text.trim()
 def totalCommitCount = 'git rev-list --count --all'.execute().text.trim()
-def latestVersionTag = 'git describe --tags --match="version-*" HEAD'.execute().text.trim().substring(8);
+def latestVersionTag = 'git describe --tags --match="version-*" HEAD'.execute().text.trim()
+def latestVersionTagVersion = latestVersionTag.startsWith('version-') ? latestVersionTag.substring(8) : '0.1'
 def buildNumber = System.getenv('BUILD_NUMBER') ?: System.getenv('TRAVIS_BUILD_NUMBER')
 
-def releaseBranch = gitBranch.startsWith("release-")
-
-def majorMinorVersion =  releaseBranch ? gitBranch.substring(8) : latestVersionTag
+def isReleaseBranch = gitBranch.startsWith("release-")
+def majorMinorVersion =  isReleaseBranch ? gitBranch.substring(8) : latestVersionTagVersion
 def patchVersion = totalCommitCount
 
 def buildSuffix = (buildNumber != null) ? ('.' + buildNumber) : '-SNAPSHOT'
