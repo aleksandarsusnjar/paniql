@@ -1,0 +1,2 @@
+# paniql
+GraphQL Request Costing
