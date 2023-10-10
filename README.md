@@ -1,9 +1,9 @@
 # Paniql: GraphQL Request Costing 
 
-> Status: early experimental alpha, to gauge interest and showcase the possibilities.
-> Please reach out if interested in the approach, direct use or development.
-> Minimal tests are running but without assertions as exact goals are still in flux,
-> being evaluated. ***Feedback and help are welcome.***
+> **Status**: This is an early experimental alpha version designed to gauge interest
+> and showcase the possibilities. Please reach out if you are interested in the approach, 
+> its direct application, or its development. Minimal tests are running, as the project 
+> goals are still evolving. ***Feedback and assistance are welcome.***
 
 ## Goal
 

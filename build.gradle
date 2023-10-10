@@ -74,6 +74,20 @@ task versionInfo {
     }
 }
 
+task envInfo {
+    doLast {
+        Map env = System.getenv();
+        for (String name : env.keySet().toSorted()) {
+            String uname = name.toUpperCase(); // just in case
+            if (uname.contains("TOKEN") || uname.contains("PASSWORD") || uname.contains("SECRET")) {
+                System.out.println(uname + ': <removed>')
+            } else {
+                System.out.println(uname + ': ' + env.get(name));
+            }
+        }
+    }
+}
+
 repositories {
     mavenCentral()
 }
