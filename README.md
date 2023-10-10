@@ -126,3 +126,27 @@ Java GraphQL projects as an embedded first level of defence against malicious
 requests. Note that, while current implementation is in Java, this is not meant to be
 tied to Java at all.
 
+## Project structure
+
+Though small, the project is divided into three modules:
+
+- [core](core/) - the code expected to be needed in production.
+  Main classes of interest to start with are:
+    - [Environment](core/src/main/java/net/susnjar/paniql/Environment.java) - reusable representation the annotated GraphQL API schema model.
+    - [Request](core/src/main/java/net/susnjar/paniql/Request.java) - representation of the GraphQL request to analyse.
+    - [Invoice](core/src/main/java/net/susnjar/paniql/pricing/Invoice.java) - the result of the analysis.
+- [print](print/) - the [code](print/src/main/java/net/susnjar/paniql/print/InvoicePrinter.java) that produces formatted ASCII text reports of [Invoice(s)](core/src/main/java/net/susnjar/paniql/pricing/Invoice.java).
+- [commandline](commandline) - a command-line utility that utilizes the other two projects to allow "playing" with Paniql from command line.
+
+Documentation is pretty limited at the moment. Please see the test classes for code examples:
+
+- [Basic use](core/src/test/java/net/susnjar/paniql/InvoiceTest.java)
+- [Going over results, printing](print/src/test/java/net/susnjar/paniql/print/InvoicePrinterTest.java)
+
+## To do
+
+- Get+apply feedback + help
+- Finish CI+CD
+- More documentation
+- Fix bugs
+- Figure out what else to do, if there's interest

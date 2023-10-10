@@ -1,8 +1,11 @@
-package net.susnjar.paniql;
+package net.susnjar.paniql.print;
 
 import graphql.language.Document;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import io.github.classgraph.Resource;
+import net.susnjar.paniql.CoreResourceDrivenTest;
+import net.susnjar.paniql.Environment;
+import net.susnjar.paniql.Request;
 import net.susnjar.paniql.pricing.Invoice;
 import net.susnjar.paniql.print.InvoicePrinter;
 import org.junit.jupiter.api.DynamicTest;
