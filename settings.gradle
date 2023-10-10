@@ -4,3 +4,8 @@ include 'core'
 include 'print'
 include 'commandline'
 
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}

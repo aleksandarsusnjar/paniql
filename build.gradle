@@ -2,15 +2,76 @@ plugins {
     id 'java'
 }
 
+subprojects {
+    apply plugin: "maven-publish"
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/aleksandarsusnjar/paniql")
+
+                afterEvaluate {
+                    credentials {
+                        username = System.getenv("GITHUB_ACTOR")
+                        password = System.getenv("GITHUB_TOKEN")
+                    }
+                }
+            }
+        }
+        afterEvaluate {
+            publications {
+                maven(MavenPublication) {
+                    from components.java
+                    pom {
+                        licenses {
+                            license {
+                                name = "MIT License"
+                                url = "https://opensource.org/license/mit/"
+                            }
+                            scm {
+                                url = "https://github.com/aleksandarsusnjar/paniql"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 // GitHub Actions environment variables
 def gitBranch = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
-def githubRefName = System.getenv('GITHUB_REF_NAME') ?: "local";
-def buildNumber = System.getenv('BUILD_NUMBER');
-def buildSuffix = (buildNumber != null) ? ('.' + buildNumber) : '.0-SNAPSHOT';
+//def branchCommitCount = 'git rev-list --count HEAD'.execute().text.trim()
+def totalCommitCount = 'git rev-list --count --all'.execute().text.trim()
+def latestVersionTag = 'git describe --tags --match="version-*" HEAD'.execute().text.trim().substring(8);
+def buildNumber = System.getenv('BUILD_NUMBER') ?: System.getenv('TRAVIS_BUILD_NUMBER')
+
+def releaseBranch = gitBranch.startsWith("release-")
+
+def majorMinorVersion =  releaseBranch ? gitBranch.substring(8) : latestVersionTag
+def patchVersion = totalCommitCount
+
+def buildSuffix = (buildNumber != null) ? ('.' + buildNumber) : '-SNAPSHOT'
 
 allprojects {
     group = 'net.susnjar.paniql'
-    version = '0.1.1' + buildSuffix
+    version = majorMinorVersion + '.' + patchVersion + buildSuffix
+}
+
+task versionInfo {
+    doLast {
+        System.out.println('gitBranch:        ' + gitBranch)
+        System.out.println('latestVersionTag: ' + latestVersionTag)
+        System.out.println('totalCommitCount: ' + totalCommitCount)
+        System.out.println('buildNumber:      ' + buildNumber)
+        System.out.println('version:          ' + version)
+    }
 }
 
 repositories {
@@ -29,4 +90,5 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
 
