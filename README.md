@@ -93,6 +93,59 @@ This is in addition to focusing on primary, first-order  information mapped from
 use cases and away from the [non-goal](#non-goal) - it isn't about the performance or
 resource utilization but the validity of the usage.
 
+## Ways to use
+
+### From command line
+Prerequisite: Java 11 or greater and the `paniql-commandline` jar.
+
+```
+java -jar <path-to>paniql-commandline-version.jar <path-to-schema> <path-to-request>
+```
+
+### From Java code
+
+Get relevant dependencies. Unless you want console printing and/or command-line support,
+you'll just need the `paniql-core` with its transitive dependencies (`graphql-java`).
+
+<table>
+<thead><tr><th>Gradle (`build.gradle`)</th><th>Maven (`pom.xml`)</th></tr></thead>
+<tbody><tr>
+<td>
+```Gradle
+dependencies {
+    implementation 'net.susnjar.paniql:core:0.1.24.21'
+}
+```
+</td>
+<td>
+```xml
+<dependency>
+  <groupId>net.susnjar.paniql</groupId>
+  <artifactId>core</artifactId>
+  <version>0.1.24.21</version>
+</dependency>
+```
+</td></tr></tbody></table>
+
+Import relevant classes:
+```java
+import net.susnjar.paniql.Environment;
+import net.susnjar.paniql.pricing.Invoice;
+```
+
+Instantiate the [Environment](core/src/main/java/net/susnjar/paniql/Environment.java) object and keep it handy:
+```java
+final Environment environment = new Environment(Path.of("/some/dir/api-schema.graphqls"));
+```
+
+Obtain and navigate the resulting [Invoice](core/src/main/java/net/susnjar/paniql/pricing/Invoice.java)
+objects.
+
+```java
+final Invoice invoice1 = environment.invoice("{ folder(id: 123) { id } }");
+final Invoice invoice2 = environment.invoice(someRequestString);
+final Invoice invoice3 = environment.invoice(parsedRequestDocument);
+```
 ## Implied but left out
 
 Paniql is not a complete solution, only a part of it. It only analyses the requests
