@@ -48,8 +48,9 @@ accounting for resource type access constraints.
 
 Paniql analyses a given GraphQL request and, given the GraphQL schema annotated with
 [Paniql directives](core/src/main/resources/net/susnjar/paniql/PaniqlSchema.graphqls),
-estimates the access and a number of different standard work type quantities for each
-type and field, while supporting servers able to optimize queries by "looking ahead"
+estimates the access and a number of different
+[standard work type](core/src/main/java/net/susnjar/paniql/pricing/WorkType.java)
+quantities for each type and field, while supporting servers able to optimize queries by "looking ahead"
 (see [1](https://www.graphql-java.com/blog/deep-dive-data-fetcher-results/),
 [2](https://www.apollographql.com/blog/backend/performance/optimizing-your-graphql-request-waterfalls/),
 [3](https://engineering.zalando.com/posts/2021/03/optimize-graphql-server-with-lookaheads.html),
@@ -109,15 +110,17 @@ you'll just need the `paniql-core` with its transitive dependencies (`graphql-ja
 
 <table>
 <thead><tr><th>Gradle (`build.gradle`)</th><th>Maven (`pom.xml`)</th></tr></thead>
-<tbody><tr>
+<tbody><tr valign="top">
 <td>
-```Gradle
+
+```Groovy
 dependencies {
     implementation 'net.susnjar.paniql:core:0.1.24.21'
 }
 ```
 </td>
 <td>
+
 ```xml
 <dependency>
   <groupId>net.susnjar.paniql</groupId>
@@ -138,14 +141,51 @@ Instantiate the [Environment](core/src/main/java/net/susnjar/paniql/Environment.
 final Environment environment = new Environment(Path.of("/some/dir/api-schema.graphqls"));
 ```
 
-Obtain and navigate the resulting [Invoice](core/src/main/java/net/susnjar/paniql/pricing/Invoice.java)
-objects.
+Obtain an "[Invoice](core/src/main/java/net/susnjar/paniql/pricing/Invoice.java)":
 
 ```java
 final Invoice invoice1 = environment.invoice("{ folder(id: 123) { id } }");
 final Invoice invoice2 = environment.invoice(someRequestString);
 final Invoice invoice3 = environment.invoice(parsedRequestDocument);
 ```
+
+Inspect it as desired. Example to follow also relies on the following imports:
+
+```java
+import java.util.Map;
+import net.susnjar.paniql.pricing.Price;
+import net.susnjar.paniql.pricing.WorkType;
+```
+
+Example [Invoice](core/src/main/java/net/susnjar/paniql/pricing/Invoice.java) inspection:
+
+```java
+final Map<OutputTypeModel, Price> resourceCosts = invoice.getResourceCosts(); 
+for (final Map.Entry<OutputTypeModel, Price> entry: resourceCosts.entrySet()) {
+    final String resourceTypeName = entry.getKey()..getFullyQualifiedName();
+    final Price price = entry.getValue();
+    System.out.println(resourceTypeName + ":");
+    for (final WorkType workType: WorkType.values()) {
+        System.out.println("  - " + workType.getHeading() + ": " + price.get(workType).getMaximum());
+    }
+}
+```
+
+Note that the invoice divides the items into three categories:
+
+1. Accessing instances of types declared as resources using the `@paniqlResource` directive, as shown
+   in the above example, accessed using `invoice.getResourceCosts()`.
+2. Accessing instances of other types not marked as resources, using `invoice.getPartCosts()`, 
+   also yielding `Map.Entry<OutputTypeModel, Price>`.
+3. Accessing fields, using `invoice.getFieldCosts()`, yielding a similar `Map<FieldDefModel, Price>`.
+
+Also note that
+[Invoice](core/src/main/java/net/susnjar/paniql/pricing/Invoice.java),
+[Price](core/src/main/java/net/susnjar/paniql/pricing/Price.java) and
+[Bounds](core/src/main/java/net/susnjar/paniql/pricing/Bounds.java)
+support basic arithmetic (addition, multiplication) so that they can be easily aggregated. 
+See their methods for further reference.
+
 ## Implied but left out
 
 Paniql is not a complete solution, only a part of it. It only analyses the requests
