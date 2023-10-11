@@ -109,13 +109,18 @@ Get relevant dependencies. Unless you want console printing and/or command-line 
 you'll just need the `paniql-core` with its transitive dependencies (`graphql-java`).
 
 <table>
-<thead><tr><th>Gradle (`build.gradle`)</th><th>Maven (`pom.xml`)</th></tr></thead>
+<thead><tr><th>
+
+Gradle (`build.gradle`)</th>
+<th>
+
+Maven (`pom.xml`)</th></tr></thead>
 <tbody><tr valign="top">
 <td>
 
 ```Groovy
 dependencies {
-    implementation 'net.susnjar.paniql:core:0.1.24.21'
+  implementation 'net.susnjar.paniql:core:0.1.24.21'
 }
 ```
 </td>
