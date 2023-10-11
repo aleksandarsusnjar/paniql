@@ -238,7 +238,6 @@ Documentation is pretty limited at the moment. Please see the test classes for c
 ## To do
 
 - Get+apply feedback + help
-- Finish CI+CD
 - More documentation
 - Fix bugs
 - Figure out what else to do, if there's interest
