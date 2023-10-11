@@ -167,7 +167,7 @@ Example [Invoice](core/src/main/java/net/susnjar/paniql/pricing/Invoice.java) in
 ```java
 final Map<OutputTypeModel, Price> resourceCosts = invoice.getResourceCosts(); 
 for (final Map.Entry<OutputTypeModel, Price> entry: resourceCosts.entrySet()) {
-    final String resourceTypeName = entry.getKey()..getFullyQualifiedName();
+    final String resourceTypeName = entry.getKey().getFullyQualifiedName();
     final Price price = entry.getValue();
     System.out.println(resourceTypeName + ":");
     for (final WorkType workType: WorkType.values()) {
